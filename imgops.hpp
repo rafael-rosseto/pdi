@@ -14,15 +14,8 @@ class ImgOps {
     int w, h;
     vector<vector<float>> dctdata;
 
-    void original(Mat input) {
-        imshow("PDI", input);
-        waitKey(0);
-    }
-
     void inversao(Mat input, Mat output) {
         output = Scalar(255, 255, 255) - input;
-        imshow("PDI", output);
-        waitKey(0);
     }
 
     void cinza(Mat input, Mat output) {
@@ -35,8 +28,6 @@ class ImgOps {
                     3;
             }
         }
-        imshow("PDI", output);
-        waitKey(0);
     }
 
     void canalB(Mat input, Mat output) {
@@ -48,8 +39,6 @@ class ImgOps {
                             input.at<Vec3b>(i, j)[0];
             }
         }
-        imshow("PDI", output);
-        waitKey(0);
     }
 
     void canalG(Mat input, Mat output) {
@@ -61,8 +50,6 @@ class ImgOps {
                             input.at<Vec3b>(i, j)[1];
             }
         }
-        imshow("PDI", output);
-        waitKey(0);
     }
 
     void canalR(Mat input, Mat output) {
@@ -74,8 +61,6 @@ class ImgOps {
                             input.at<Vec3b>(i, j)[2];
             }
         }
-        imshow("PDI", output);
-        waitKey(0);
     }
 
     void media(Mat input, Mat output, int range) {
@@ -98,8 +83,6 @@ class ImgOps {
                 output.at<Vec3b>(i, j)[2] = pixel[2] * (1.0f / count);
             }
         }
-        imshow("PDI", output);
-        waitKey(0);
     }
 
     void binario(Mat input, Mat output, short alpha) {
@@ -114,8 +97,6 @@ class ImgOps {
                     output.at<Vec3b>(Point(i, j)) = Vec3b(0, 0, 0);
             }
         }
-        imshow("PDI", output);
-        waitKey(0);
     }
 
     void limiar(Mat input, Mat output, short alpha) {
@@ -130,8 +111,6 @@ class ImgOps {
                     output.at<Vec3b>(Point(i, j)) = Vec3b(0, 0, 0);
             }
         }
-        imshow("PDI", output);
-        waitKey(0);
     }
 
     void mediana(Mat input, Mat output, int range) {
@@ -157,8 +136,6 @@ class ImgOps {
                 output.at<Vec3b>(i, j)[0] = channelB.at(count / 2 + 1);
             }
         }
-        imshow("PDI", output);
-        waitKey(0);
     }
 
     void normalizar(Mat input, Mat output) {
