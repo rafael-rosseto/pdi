@@ -1,7 +1,5 @@
 #include <iostream>
-#include <opencv2/core/mat.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
+#include <opencv2/opencv.hpp>
 #include <vector>
 
 #define pi 3.142857
@@ -73,24 +71,7 @@ int main(int argc, char *argv[]) {
     h = input.rows;
     dctdata.resize(h, vector<float>(w));
     dctTransform(input);
-    cout << "DCT:" << endl;
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            cout.width(11);
-            cout << fixed << dctdata[i][j] << " ";
-        }
-        cout << endl;
-    }
     idctTransform(output);
-    cout << endl
-         << "IDCT:" << endl;
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            cout.width(11);
-            cout << fixed << dctdata[i][j] << " ";
-        }
-        cout << endl;
-    }
     imwrite("idct.png", output);
     return 0;
 }

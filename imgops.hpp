@@ -1,5 +1,4 @@
 #pragma once
-#include <fstream>
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <vector>
@@ -13,55 +12,6 @@ class ImgOps {
    public:
     int w, h;
     vector<vector<float>> dctdata;
-
-    void inversao(Mat input, Mat output) {
-        output = Scalar(255, 255, 255) - input;
-    }
-
-    void cinza(Mat input, Mat output) {
-        for (int i = 0; i < input.cols; i++) {
-            for (int j = 0; j < input.rows; j++) {
-                output.at<Vec3b>(i, j)[0] = output.at<Vec3b>(i, j)[1] = output.at<Vec3b>(i, j)[2] =
-                    (input.at<Vec3b>(i, j)[0] +
-                     input.at<Vec3b>(i, j)[1] +
-                     input.at<Vec3b>(i, j)[2]) /
-                    3;
-            }
-        }
-    }
-
-    void canalB(Mat input, Mat output) {
-        for (int i = 0; i < input.cols; i++) {
-            for (int j = 0; j < input.rows; j++) {
-                output.at<Vec3b>(i, j)[0] =
-                    output.at<Vec3b>(i, j)[1] =
-                        output.at<Vec3b>(i, j)[2] =
-                            input.at<Vec3b>(i, j)[0];
-            }
-        }
-    }
-
-    void canalG(Mat input, Mat output) {
-        for (int i = 0; i < input.cols; i++) {
-            for (int j = 0; j < input.rows; j++) {
-                output.at<Vec3b>(i, j)[0] =
-                    output.at<Vec3b>(i, j)[1] =
-                        output.at<Vec3b>(i, j)[2] =
-                            input.at<Vec3b>(i, j)[1];
-            }
-        }
-    }
-
-    void canalR(Mat input, Mat output) {
-        for (int i = 0; i < input.cols; i++) {
-            for (int j = 0; j < input.rows; j++) {
-                output.at<Vec3b>(i, j)[0] =
-                    output.at<Vec3b>(i, j)[1] =
-                        output.at<Vec3b>(i, j)[2] =
-                            input.at<Vec3b>(i, j)[2];
-            }
-        }
-    }
 
     void media(Mat input, Mat output, int range) {
         for (int i = 0; i < input.cols; i++) {
@@ -85,30 +35,16 @@ class ImgOps {
         }
     }
 
-    void binario(Mat input, Mat output, short alpha) {
+    void binario(Mat src, Mat output, short alpha) {
+        Mat input;
+        cvtColor(src, input, COLOR_RGB2GRAY);
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
-                int aux = input.at<Vec3b>(i, j)[0] +
-                          input.at<Vec3b>(i, j)[1] +
-                          input.at<Vec3b>(i, j)[2] / 3;
+                int aux = input.at<uchar>(i, j);
                 if (aux > alpha)
-                    output.at<Vec3b>(Point(i, j)) = Vec3b(255, 255, 255);
+                    output.at<uchar>(i, j) = 255;
                 else
-                    output.at<Vec3b>(Point(i, j)) = Vec3b(0, 0, 0);
-            }
-        }
-    }
-
-    void limiar(Mat input, Mat output, short alpha) {
-        for (int i = 0; i < input.cols; i++) {
-            for (int j = 0; j < input.rows; j++) {
-                int aux = input.at<Vec3b>(i, j)[0] +
-                          input.at<Vec3b>(i, j)[1] +
-                          input.at<Vec3b>(i, j)[2] / 3;
-                if (aux > alpha)
-                    output.at<Vec3b>(Point(i, j)) = input.at<Vec3b>(Point(i, j));
-                else
-                    output.at<Vec3b>(Point(i, j)) = Vec3b(0, 0, 0);
+                    output.at<uchar>(i, j) = 0;
             }
         }
     }
@@ -138,22 +74,26 @@ class ImgOps {
         }
     }
 
-    void normalizar(Mat input, Mat output) {
-        int high = 0, low = 255;
+    void normalizar(Mat src, Mat output) {
+        Mat input;
+        cvtColor(src, input, COLOR_RGB2GRAY);
+        int max = 0, min = 255;
         for (int i = 0; i < input.cols; i++) {
-            for (int j = 0; j < input.rows; j++) {
-                if (input.at<uchar>(i, j) > high)
-                    high = input.at<uchar>(i, j);
-                if (input.at<uchar>(i, j) < low)
-                    low = input.at<uchar>(i, j);
+            for (int j = 0; j < input.cols; j++) {
+                if (input.at<uchar>(i, j) > max) max = input.at<uchar>(i, j);
+                if (input.at<uchar>(i, j) < min) min = input.at<uchar>(i, j);
             }
         }
-        for (int i = 0; i < input.cols; i++)
-            for (int j = 0; j < input.rows; j++)
-                output.at<uchar>(i, j) = input.at<uchar>(i, j) * (255 / high) - low;
+        for (int i = 0; i < input.cols; i++) {
+            for (int j = 0; j < input.cols; j++) {
+                output.at<uchar>(i, j) = (input.at<uchar>(i, j) - min) / (max - min) * 255;
+            }
+        }
     }
 
-    void dctTransform(Mat input) {
+    void dctTransform(Mat src) {
+        Mat input;
+        cvtColor(src, input, COLOR_RGB2GRAY);
         float ci, cj, dct1, sum;
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
@@ -200,7 +140,6 @@ class ImgOps {
                         sum = sum + dct1;
                     }
                 }
-                dctdata[i][j] = sum;
                 output.at<uchar>(i, j) = sum;
             }
         }

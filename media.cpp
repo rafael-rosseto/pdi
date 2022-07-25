@@ -11,6 +11,10 @@ int main(int argc, char *argv[]) {
     Mat output = input.clone();
     int range = stoi(argv[2]);
     imagem.media(input, output, range);
-    imwrite("media.png", output);
+    namedWindow("Media");
+    imshow("Media", output);
+    while (getWindowProperty("Media", WND_PROP_VISIBLE))
+        waitKey(50);
+    destroyAllWindows();
     return 0;
 }
