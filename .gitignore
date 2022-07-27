@@ -1,4 +1,5 @@
 build/
+imagens/
 *.exe
 *.out
 *.app
