@@ -590,8 +590,6 @@ class ImgOps {
 
             variancia_total = variancia_fundo * peso_fundo + variancia_objeto * peso_objeto;
 
-            printf("lim %d var_total %f\n", lim, variancia_total);
-
             // verifica se tem menor variância
             if (lim == lim_min)
                 menor_variancia = variancia_total;
@@ -612,7 +610,74 @@ class ImgOps {
                     output.at<Vec3b>(Point(j, i)) = Vec3b(0, 0, 0);
             }
         }
+    }
 
-        printf("lim menor var %d menor var %f\n", menor_lim, menor_variancia);
+    void pseudocores(Mat input, Mat output) {
+        //definir intervalos
+        int cor;
+        int borda_sup = int(input.rows/4);
+        int borda_inf = input.rows - borda_sup;
+
+        for (int i = 0; i < input.cols; i++) {
+            for (int j = 0; j < input.rows; j++) {
+
+                if (j < borda_sup || j > borda_inf) { //para as bordas
+
+                    cor = input.at<Vec3b>(j, i)[1];
+                    if (cor >= 100) //no 130 deixa branco antártica e sibéria
+                        output.at<Vec3b>(Point(i, j)) = Vec3b(170, 230, 230);
+                    else if (cor <= 15) { // oceâno
+                        cor *=  12; //12 de intervalo fica bom pra oceâno
+                        if (cor <= 255)                        //(b, g, r)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(cor, 0, 0); //aumenta azul
+                        else if (cor <= 510)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(255, cor - 255, 0); //aumenta verde
+                        else if (cor <= 765)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(255 - (cor - 510), 255, 0); //diminui azul
+                        else if (cor <= 1020)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(0, 255, cor - 765); //aumenta vermelho
+                        else if (cor <= 1275)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(0, 255 - (cor - 1020), 255); //diminui azul
+                        else output.at<Vec3b>(Point(i, j)) = Vec3b(0, 30, 0); //aumenta verde e azul
+                    }
+                    else {
+                        cor *= 8;
+                        if (cor <= 500)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(0, int(cor/5), 0);
+                        else
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(0, int(cor/4), 0);
+                    }
+                }
+                else { //para o centro
+                    cor = input.at<Vec3b>(j, i)[1];
+                    if (cor <= 15) { // oceâno
+                        cor *=  12; //12 de intervalo fica bom pra oceâno
+                        if (cor <= 255)                        //(x, y, z)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(cor, 0, 0); //aumenta azul
+                        else if (cor <= 510)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(255, cor - 255, 0); //aumenta verde
+                        else if (cor <= 765)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(255 - (cor - 510), 255, 0); //diminui azul
+                        else if (cor <= 1020)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(0, 255, cor - 765); //aumenta vermelho
+                        else if (cor <= 1275)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(0, 255 - (cor - 1020), 255); //diminui azul
+                        else output.at<Vec3b>(Point(i, j)) = Vec3b(255, 255, 255); //aumenta verde e azul
+                    }
+                    else { //continentes do verde escuro ao verde-amarelado claro
+                        cor *= 3;
+                        if (cor <= 40)                        //(b, g, r)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(0, int(cor/2), 0); //parte escura
+                        else if (cor <= 330)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(0, int(cor/1.5), 0); //parte clara
+                        else if (cor <= 500)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(38, 200, 195); //parte amarelada
+                        else if (cor <= 600)
+                            output.at<Vec3b>(Point(i, j)) = Vec3b(60, 210, 210); //transição
+                        else output.at<Vec3b>(Point(i, j)) = Vec3b(140, 230, 230); //neve
+                    }
+                }
+            }
+        }
     }
 };
