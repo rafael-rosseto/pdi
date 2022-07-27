@@ -10,13 +10,11 @@ ImgOps imagem;
 
 int main(int argc, char *argv[]) {
     Mat input = imread(argv[1]);
-    cvtColor(input, input, COLOR_BGR2GRAY);
-    Mat output = input.clone();
     imagem.exibir(input);
-    imagem.dctTransform(input);
-    imagem.normalizarDct(output);
-    imagem.exibir(output);
-    imagem.idctTransform(output);
+    cvtColor(input, input, COLOR_BGR2HLS);
+    Mat output = input.clone();
+    imagem.normalizarColorido(input, output);
+    cvtColor(output, output, COLOR_HLS2BGR);
     imagem.exibir(output);
     return 0;
 }
