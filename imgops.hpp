@@ -9,9 +9,20 @@ using namespace cv;
 using namespace std;
 
 class ImgOps {
-   public:
+   private:
     int w, h;
     vector<vector<float>> dctdata;
+
+   public:
+    void exibir(Mat imagem) {
+        namedWindow("Processamento Digital de Imagens", WINDOW_AUTOSIZE);
+        imshow("Processamento Digital de Imagens", imagem);
+        while (getWindowProperty("Processamento Digital de Imagens", WND_PROP_VISIBLE)) {
+            char c = waitKeyEx(50);
+            if (c == ' ') break;
+        }
+        destroyAllWindows();
+    }
 
     void media(Mat input, Mat output, int range) {
         for (int i = 0; i < input.cols; i++) {
@@ -41,7 +52,7 @@ class ImgOps {
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
                 int aux = input.at<uchar>(i, j);
-                if (aux > alpha)
+                if (aux >= alpha)
                     output.at<uchar>(i, j) = 255;
                 else
                     output.at<uchar>(i, j) = 0;
@@ -74,9 +85,7 @@ class ImgOps {
         }
     }
 
-    void normalizar(Mat src, Mat output) {
-        Mat input;
-        cvtColor(src, input, COLOR_RGB2GRAY);
+    void normalizarCinza(Mat input, Mat output) {
         int max = 0, min = 255;
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.cols; j++) {
@@ -86,14 +95,46 @@ class ImgOps {
         }
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.cols; j++) {
-                output.at<uchar>(i, j) = (input.at<uchar>(i, j) - min) / (max - min) * 255;
+                output.at<uchar>(i, j) = (input.at<uchar>(i, j) - min) * 255 / (max - min);
             }
         }
     }
 
-    void dctTransform(Mat src) {
-        Mat input;
-        cvtColor(src, input, COLOR_RGB2GRAY);
+    void normalizarColorido(Mat input, Mat output) {
+        int max = 0, min = 255;
+        for (int i = 0; i < input.cols; i++) {
+            for (int j = 0; j < input.cols; j++) {
+                if (input.at<Vec3b>(i, j)[1] > max) max = input.at<Vec3b>(i, j)[1];
+                if (input.at<Vec3b>(i, j)[1] < min) min = input.at<Vec3b>(i, j)[1];
+            }
+        }
+        for (int i = 0; i < input.cols; i++) {
+            for (int j = 0; j < input.cols; j++) {
+                output.at<Vec3b>(i, j)[1] = (input.at<Vec3b>(i, j)[1] - min) * 255 / (max - min);
+            }
+        }
+    }
+
+    void normalizarDct(Mat output) {
+        float max = numeric_limits<float>::min();
+        float min = numeric_limits<float>::max();
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                if (dctdata[i][j] > max) max = dctdata[i][j];
+                if (dctdata[i][j] < min) min = dctdata[i][j];
+            }
+        }
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                output.at<uchar>(i, j) = (dctdata[i][j] - min) * 255 / (max - min);
+            }
+        }
+    }
+
+    void dctTransform(Mat input) {
+        w = input.cols;
+        h = input.rows;
+        dctdata.resize(h, vector<float>(w));
         float ci, cj, dct1, sum;
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
@@ -150,7 +191,7 @@ class ImgOps {
             for (int j = 0; j < input.rows; j++) {  // laços para percorrer a imagem
                 // em cada pixel fazer:
                 if (i < range || i > input.cols - range || j < range || j > input.rows - range) {
-                    //se está no canto superior esquerdo
+                    // se está no canto superior esquerdo
                     if (i < range && j < range) {
                         int max = input.at<Vec3b>(i, j)[0];
                         for (int m = 0; m < i + range; m++) {
@@ -161,7 +202,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
                     }
-                    //se está no canto superior direito 
+                    // se está no canto superior direito
                     else if (i > (input.cols - range) && j < range) {
                         int max = input.at<Vec3b>(i, j)[0];
                         for (int m = i - range; m < input.cols; m++) {
@@ -172,7 +213,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
                     }
-                    //se está no canto inferior direito
+                    // se está no canto inferior direito
                     else if (i > (input.cols - range) && j > (input.rows - range)) {
                         int max = input.at<Vec3b>(i, j)[0];
                         for (int m = i - range; m < input.cols; m++) {
@@ -183,7 +224,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
                     }
-                    //se está no canto inferior esquerdo
+                    // se está no canto inferior esquerdo
                     else if (i < range && j > (input.rows - range)) {
                         int max = input.at<Vec3b>(i, j)[0];
                         for (int m = 0; m < i + range; m++) {
@@ -194,7 +235,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
                     }
-                    //se está na borda de cima
+                    // se está na borda de cima
                     else if (j < range) {
                         int max = input.at<Vec3b>(i, j)[0];
                         for (int m = i - range; m < i + range; m++) {
@@ -205,7 +246,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
                     }
-                    //se está na borda da direita
+                    // se está na borda da direita
                     else if (i > input.cols - range) {
                         int max = input.at<Vec3b>(i, j)[0];
                         for (int m = i - range; m < input.cols; m++) {
@@ -216,7 +257,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
                     }
-                    //se está na borda de baixo
+                    // se está na borda de baixo
                     else if (j > input.rows - range) {
                         int max = input.at<Vec3b>(i, j)[0];
                         for (int m = i - range; m < i + range; m++) {
@@ -227,7 +268,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
                     }
-                    //se está na borda da esquerda
+                    // se está na borda da esquerda
                     else {
                         int max = input.at<Vec3b>(i, j)[0];
                         for (int m = 0; m < i + range; m++) {
@@ -238,8 +279,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
                     }
-                }
-                else {
+                } else {
                     int max = input.at<Vec3b>(i, j)[0];
                     for (int m = i - range; m < i + range; m++) {
                         for (int n = j - range; n < j + range; n++) {
@@ -258,7 +298,7 @@ class ImgOps {
             for (int j = 0; j < input.rows; j++) {  // laços para percorrer a imagem
                 // em cada pixel fazer:
                 if (i < range || i > input.cols - range || j < range || j > input.rows - range) {
-                    //se está no canto superior esquerdo
+                    // se está no canto superior esquerdo
                     if (i < range && j < range) {
                         int min = input.at<Vec3b>(i, j)[0];
                         for (int m = 0; m < i + range; m++) {
@@ -269,7 +309,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
                     }
-                    //se está no canto superior direito 
+                    // se está no canto superior direito
                     else if (i > (input.cols - range) && j < range) {
                         int min = input.at<Vec3b>(i, j)[0];
                         for (int m = i - range; m < input.cols; m++) {
@@ -280,7 +320,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
                     }
-                    //se está no canto inferior direito
+                    // se está no canto inferior direito
                     else if (i > (input.cols - range) && j > (input.rows - range)) {
                         int min = input.at<Vec3b>(i, j)[0];
                         for (int m = i - range; m < input.cols; m++) {
@@ -291,7 +331,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
                     }
-                    //se está no canto inferior esquerdo
+                    // se está no canto inferior esquerdo
                     else if (i < range && j > (input.rows - range)) {
                         int min = input.at<Vec3b>(i, j)[0];
                         for (int m = 0; m < i + range; m++) {
@@ -302,7 +342,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
                     }
-                    //se está na borda de cima
+                    // se está na borda de cima
                     else if (j < range) {
                         int min = input.at<Vec3b>(i, j)[0];
                         for (int m = i - range; m < i + range; m++) {
@@ -313,7 +353,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
                     }
-                    //se está na borda da direita
+                    // se está na borda da direita
                     else if (i > input.cols - range) {
                         int min = input.at<Vec3b>(i, j)[0];
                         for (int m = i - range; m < input.cols; m++) {
@@ -324,7 +364,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
                     }
-                    //se está na borda de baixo
+                    // se está na borda de baixo
                     else if (j > input.rows - range) {
                         int min = input.at<Vec3b>(i, j)[0];
                         for (int m = i - range; m < i + range; m++) {
@@ -335,7 +375,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
                     }
-                    //se está na borda da esquerda
+                    // se está na borda da esquerda
                     else {
                         int min = input.at<Vec3b>(i, j)[0];
                         for (int m = 0; m < i + range; m++) {
@@ -346,8 +386,7 @@ class ImgOps {
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
                     }
-                }
-                else {
+                } else {
                     int min = input.at<Vec3b>(i, j)[0];
                     for (int m = i - range; m < i + range; m++) {
                         for (int n = j - range; n < j + range; n++) {
@@ -355,18 +394,18 @@ class ImgOps {
                                 min = input.at<Vec3b>(n, m)[0];
                         }
                     }
-                    output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);                  
+                    output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
                 }
             }
         }
     }
 
-    void filtraMedia(Mat input, Mat output, int range) {  //não utilizarei range por enquanto
+    void filtraMedia(Mat input, Mat output, int range) {  // não utilizarei range por enquanto
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {  // laços para percorrer a imagem
                 // em cada pixel fazer:
                 if (i < range || i > input.cols - range || j < range || j > input.rows - range) {
-                    //se está no canto superior esquerdo
+                    // se está no canto superior esquerdo
                     if (i < range && j < range) {
                         int min = input.at<Vec3b>(i, j)[0];
                         int max = input.at<Vec3b>(i, j)[0];
@@ -378,10 +417,10 @@ class ImgOps {
                                     max = input.at<Vec3b>(n, m)[0];
                             }
                         }
-                        int media = int((max + min)/2);
+                        int media = int((max + min) / 2);
                         output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
                     }
-                    //se está no canto superior direito 
+                    // se está no canto superior direito
                     else if (i > (input.cols - range) && j < range) {
                         int min = input.at<Vec3b>(i, j)[0];
                         int max = input.at<Vec3b>(i, j)[0];
@@ -393,10 +432,10 @@ class ImgOps {
                                     max = input.at<Vec3b>(n, m)[0];
                             }
                         }
-                        int media = int((max + min)/2);
+                        int media = int((max + min) / 2);
                         output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
                     }
-                    //se está no canto inferior direito
+                    // se está no canto inferior direito
                     else if (i > (input.cols - range) && j > (input.rows - range)) {
                         int min = input.at<Vec3b>(i, j)[0];
                         int max = input.at<Vec3b>(i, j)[0];
@@ -408,10 +447,10 @@ class ImgOps {
                                     max = input.at<Vec3b>(n, m)[0];
                             }
                         }
-                        int media = int((max + min)/2);
+                        int media = int((max + min) / 2);
                         output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
                     }
-                    //se está no canto inferior esquerdo
+                    // se está no canto inferior esquerdo
                     else if (i < range && j > (input.rows - range)) {
                         int min = input.at<Vec3b>(i, j)[0];
                         int max = input.at<Vec3b>(i, j)[0];
@@ -423,10 +462,10 @@ class ImgOps {
                                     max = input.at<Vec3b>(n, m)[0];
                             }
                         }
-                        int media = int((max + min)/2);
+                        int media = int((max + min) / 2);
                         output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
                     }
-                    //se está na borda de cima
+                    // se está na borda de cima
                     else if (j < range) {
                         int min = input.at<Vec3b>(i, j)[0];
                         int max = input.at<Vec3b>(i, j)[0];
@@ -438,10 +477,10 @@ class ImgOps {
                                     max = input.at<Vec3b>(n, m)[0];
                             }
                         }
-                        int media = int((max + min)/2);
+                        int media = int((max + min) / 2);
                         output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
                     }
-                    //se está na borda da direita
+                    // se está na borda da direita
                     else if (i > input.cols - range) {
                         int min = input.at<Vec3b>(i, j)[0];
                         int max = input.at<Vec3b>(i, j)[0];
@@ -453,10 +492,10 @@ class ImgOps {
                                     max = input.at<Vec3b>(n, m)[0];
                             }
                         }
-                        int media = int((max + min)/2);
+                        int media = int((max + min) / 2);
                         output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
                     }
-                    //se está na borda de baixo
+                    // se está na borda de baixo
                     else if (j > input.rows - range) {
                         int min = input.at<Vec3b>(i, j)[0];
                         int max = input.at<Vec3b>(i, j)[0];
@@ -468,10 +507,10 @@ class ImgOps {
                                     max = input.at<Vec3b>(n, m)[0];
                             }
                         }
-                        int media = int((max + min)/2);
+                        int media = int((max + min) / 2);
                         output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
                     }
-                    //se está na borda da esquerda
+                    // se está na borda da esquerda
                     else {
                         int min = input.at<Vec3b>(i, j)[0];
                         int max = input.at<Vec3b>(i, j)[0];
@@ -483,11 +522,10 @@ class ImgOps {
                                     max = input.at<Vec3b>(n, m)[0];
                             }
                         }
-                        int media = int((max + min)/2);
+                        int media = int((max + min) / 2);
                         output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
                     }
-                }
-                else {
+                } else {
                     int min = input.at<Vec3b>(i, j)[0];
                     int max = input.at<Vec3b>(i, j)[0];
                     for (int m = i - range; m < i + range; m++) {
@@ -498,13 +536,13 @@ class ImgOps {
                                 max = input.at<Vec3b>(n, m)[0];
                         }
                     }
-                    int media = int((max + min)/2);
-                    output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);                
+                    int media = int((max + min) / 2);
+                    output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
                 }
             }
         }
     }
-   
+
     void otsu(Mat input, Mat output, int lim_min, int lim_max) {
         int menor_lim = lim_min;
         int menor_variancia;
@@ -520,7 +558,7 @@ class ImgOps {
             float variancia_objeto = 0.0;
             float variancia_total = 0.0;
 
-            //binarização e preparação para pesos e médias
+            // binarização e preparação para pesos e médias
             for (int i = 0; i < input.cols; i++) {
                 for (int j = 0; j < input.rows; j++) {
                     if (input.at<Vec3b>(i, j)[0] > lim) {
@@ -533,11 +571,11 @@ class ImgOps {
                 }
             }
 
-            //pesos
+            // pesos
             float tamanho = float(input.cols * input.rows);
-            peso_fundo = fundo/tamanho;
-            peso_objeto = objeto/tamanho;
-            //médias
+            peso_fundo = fundo / tamanho;
+            peso_objeto = objeto / tamanho;
+            // médias
             media_fundo /= fundo;
             media_objeto /= objeto;
 
@@ -554,7 +592,7 @@ class ImgOps {
 
             printf("lim %d var_total %f\n", lim, variancia_total);
 
-            //verifica se tem menor variância
+            // verifica se tem menor variância
             if (lim == lim_min)
                 menor_variancia = variancia_total;
             else {
@@ -565,7 +603,7 @@ class ImgOps {
             }
         }
 
-        //atribui o limiar com menor variância
+        // atribui o limiar com menor variância
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
                 if (input.at<Vec3b>(i, j)[0] > menor_lim)
@@ -576,6 +614,5 @@ class ImgOps {
         }
 
         printf("lim menor var %d menor var %f\n", menor_lim, menor_variancia);
-
     }
 };
