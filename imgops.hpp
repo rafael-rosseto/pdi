@@ -680,4 +680,105 @@ class ImgOps {
             }
         }
     }
+
+    void dilatacao(Mat input, Mat output) {
+        int masc[3][3] = {
+            {0, 1, 0},
+            {1, 1, 1},
+            {0, 1, 0}};
+        int cor;
+        
+        for (int i = 0; i < input.cols; i++) {
+            for (int j = 0; j < input.rows; j++) {
+                output.at<Vec3b>(Point(i, j)) = Vec3b(0, 0, 0);
+            }
+        }
+
+        for (int i = 0; i < input.cols; i++) {
+            for (int j = 0; j < input.rows; j++) {
+                cor = input.at<Vec3b>(i, j)[1];
+                if (cor > 0) {
+                    for (int ii = -1; ii <= 1; ii++) {
+                        for (int jj = -1; jj <= 1; jj++) {
+                            if (masc[ii + 1][jj + 1] == 1)
+                                output.at<Vec3b>(Point(j + jj, i + ii)) = Vec3b(255, 255, 255);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void erosao(Mat input, Mat output) {
+        int masc[3][3] = {
+            {0, 1, 0},
+            {1, 1, 1},
+            {0, 1, 0}};
+        int cor;
+        bool remove;
+        
+        for (int i = 0; i < input.cols; i++) {
+            for (int j = 0; j < input.rows; j++) {
+                output.at<Vec3b>(Point(i, j)) = Vec3b(0, 0, 0);
+            }
+        }
+
+        for (int i = 0; i < input.cols; i++) {
+            for (int j = 0; j < input.rows; j++) {
+                cor = input.at<Vec3b>(i, j)[1];
+                if (cor > 0) {
+                    remove = false;
+                    for (int ii = -1; ii <= 1; ii++) {
+                        for (int jj = -1; jj <= 1; jj++) {
+                            if (masc[ii + 1][jj + 1] == 1 && input.at<Vec3b>(i + ii, j + jj)[1] == 0)
+                                remove = true;
+                            if (remove)
+                                output.at<Vec3b>(Point(j, i)) = Vec3b(0, 0, 0);
+                            else
+                                output.at<Vec3b>(Point(j, i)) = Vec3b(255, 255, 255);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void laplacGaussiano(Mat input, Mat output) {
+        int masc[25] = {0, 0, 1, 0, 0, 0, 1, 2, 1, 0, 1,
+            2, -16, 2, 1, 0, 1, 2, 1, 0, 0, 0, 1, 0, 0};
+        int pos_masc = 0;
+        int cont_masc = 0;
+
+        for (int i = 2; i < input.cols - 2; i++) {
+            for (int j = 2; j < input.rows - 2; j++) {
+                cont_masc = 0;
+                for (int ii = -2; ii <= 2; ii++) {
+                    for (int jj = -2; jj <= 2; jj++, cont_masc++) {
+                        pos_masc += input.at<Vec3b>(i + ii, j + jj)[1] * masc[cont_masc];
+                    }
+                }
+                pos_masc /= 25;
+                output.at<Vec3b>(Point(j, i)) = Vec3b(pos_masc, pos_masc, pos_masc);
+            }
+        }
+    }
+
+    void laplaciano(Mat input, Mat output) {
+        int masc[9] = {1, 1, 1, 1, -8, 1, 1, 1, 1};
+        int pos_masc = 0;
+        int cont_masc = 0;
+
+        for (int i = 1; i < input.cols - 1; i++) {
+            for (int j = 1; j < input.rows - 1; j++) {
+                cont_masc = 0;
+                for (int ii = -1; ii <= 1; ii++) {
+                    for (int jj = -1; jj <= 1; jj++, cont_masc++) {
+                        pos_masc += input.at<Vec3b>(i + ii, j + jj)[1] * masc[cont_masc];
+                    }
+                }
+                pos_masc /= 9;
+                output.at<Vec3b>(Point(j, i)) = Vec3b(pos_masc, pos_masc, pos_masc);
+            }
+        }
+    }
 };
