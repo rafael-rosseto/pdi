@@ -11,7 +11,7 @@ ImgOps imagem;
 int main(int argc, char *argv[]) {
     Mat input = imread(argv[1]);
     int range = 1;
-    cvtColor(input, input, COLOR_BRG2GRAY);
+    cvtColor(input, input, COLOR_BGR2GRAY);
     Mat output = input.clone();
     imagem.filtraMax(input, output, range);
     imagem.exibir(output);
