@@ -10,7 +10,7 @@ ImgOps imagem;
 
 int main(int argc, char *argv[]) {
     Mat input = imread(argv[1]);
-    cvtColor(input, input, COLOR_BRG2GRAY);
+    cvtColor(input, input, COLOR_RGB2GRAY);
     Mat output = input.clone();
     imagem.erosao(input, output);
     imagem.exibir(output);
