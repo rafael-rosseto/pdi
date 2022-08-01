@@ -561,7 +561,7 @@ class ImgOps {
             // binarização e preparação para pesos e médias
             for (int i = 0; i < input.cols; i++) {
                 for (int j = 0; j < input.rows; j++) {
-                    if (input.at<Vec3b>(i, j)[0] > lim) {
+                    if (input.at<uchar>(i, j) > lim) {
                         fundo++;
                         media_fundo += input.at<Vec3b>(i, j)[0];
                     } else {
@@ -581,10 +581,10 @@ class ImgOps {
 
             for (int i = 0; i < input.cols; i++) {
                 for (int j = 0; j < input.rows; j++) {
-                    if (input.at<Vec3b>(i, j)[0] > lim)
-                        variancia_fundo += ((input.at<Vec3b>(i, j)[0] - media_fundo) * (input.at<Vec3b>(i, j)[0] - media_fundo));
+                    if (input.at<uchar>(i, j) > lim)
+                        variancia_fundo += ((input.at<uchar>(i, j) - media_fundo) * (input.at<uchar>(i, j) - media_fundo));
                     else
-                        variancia_objeto += ((input.at<Vec3b>(i, j)[0] - media_objeto) * (input.at<Vec3b>(i, j)[0] - media_objeto));
+                        variancia_objeto += ((input.at<uchar>(i, j) - media_objeto) * (input.at<uchar>(i, j) - media_objeto));
                 }
             }
 
@@ -604,10 +604,10 @@ class ImgOps {
         // atribui o limiar com menor variância
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
-                if (input.at<Vec3b>(i, j)[0] > menor_lim)
-                    output.at<Vec3b>(Point(j, i)) = Vec3b(255, 255, 255);
+                if (input.at<uchar>(i, j) > menor_lim)
+                    output.at<uchar>(j, i) = 255;
                 else
-                    output.at<Vec3b>(Point(j, i)) = Vec3b(0, 0, 0);
+                    output.at<uchar>(j, i) = 0;
             }
         }
     }
@@ -690,18 +690,18 @@ class ImgOps {
         
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
-                output.at<Vec3b>(Point(i, j)) = Vec3b(0, 0, 0);
+                output.at<uchar>(i, j) = 0;
             }
         }
 
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
-                cor = input.at<Vec3b>(i, j)[1];
+                cor = input.at<uchar>(i, j);
                 if (cor > 0) {
                     for (int ii = -1; ii <= 1; ii++) {
                         for (int jj = -1; jj <= 1; jj++) {
                             if (masc[ii + 1][jj + 1] == 1)
-                                output.at<Vec3b>(Point(j + jj, i + ii)) = Vec3b(255, 255, 255);
+                                output.at<uchar>(j + jj, i + ii)) = 255;
                         }
                     }
                 }
@@ -719,23 +719,23 @@ class ImgOps {
         
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
-                output.at<Vec3b>(Point(i, j)) = Vec3b(0, 0, 0);
+                output.at<uchar>(i, j) = 0;
             }
         }
 
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
-                cor = input.at<Vec3b>(i, j)[1];
+                cor = input.at<uchar>(i, j);
                 if (cor > 0) {
                     remove = false;
                     for (int ii = -1; ii <= 1; ii++) {
                         for (int jj = -1; jj <= 1; jj++) {
-                            if (masc[ii + 1][jj + 1] == 1 && input.at<Vec3b>(i + ii, j + jj)[1] == 0)
+                            if (masc[ii + 1][jj + 1] == 1 && input.at<uchar>(i + ii, j + jj) == 0)
                                 remove = true;
                             if (remove)
-                                output.at<Vec3b>(Point(j, i)) = Vec3b(0, 0, 0);
+                                output.at<uchar>(j, i) = 0;
                             else
-                                output.at<Vec3b>(Point(j, i)) = Vec3b(255, 255, 255);
+                                output.at<uchar>(j, i) = 255;
                         }
                     }
                 }
