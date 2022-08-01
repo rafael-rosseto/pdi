@@ -754,11 +754,11 @@ class ImgOps {
                 cont_masc = 0;
                 for (int ii = -2; ii <= 2; ii++) {
                     for (int jj = -2; jj <= 2; jj++, cont_masc++) {
-                        pos_masc += input.at<Vec3b>(i + ii, j + jj)[1] * masc[cont_masc];
+                        pos_masc += input.at<uchar>(i + ii, j + jj) * masc[cont_masc];
                     }
                 }
                 pos_masc /= 25;
-                output.at<Vec3b>(Point(j, i)) = Vec3b(pos_masc, pos_masc, pos_masc);
+                output.at<uchar>(i, j) = pos_masc;
             }
         }
     }
@@ -773,11 +773,11 @@ class ImgOps {
                 cont_masc = 0;
                 for (int ii = -1; ii <= 1; ii++) {
                     for (int jj = -1; jj <= 1; jj++, cont_masc++) {
-                        pos_masc += input.at<Vec3b>(i + ii, j + jj)[1] * masc[cont_masc];
+                        pos_masc += input.at<uchar>(i + ii, j + jj) * masc[cont_masc];
                     }
                 }
                 pos_masc /= 9;
-                output.at<Vec3b>(Point(j, i)) = Vec3b(pos_masc, pos_masc, pos_masc);
+                output.at<uchar>(i, j) = pos_masc;
             }
         }
     }
