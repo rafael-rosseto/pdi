@@ -196,8 +196,8 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
@@ -207,8 +207,8 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = max;
@@ -218,8 +218,8 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = max;
@@ -229,8 +229,8 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = max;
@@ -240,8 +240,8 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = max;
@@ -251,8 +251,8 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = max;
@@ -262,8 +262,8 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = max;
@@ -273,8 +273,8 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = max;
@@ -283,8 +283,8 @@ class ImgOps {
                     int max = input.at<uchar>(i, j);
                     for (int m = i - range; m < i + range; m++) {
                         for (int n = j - range; n < j + range; n++) {
-                            if (max < input.at<uchar>(n, m))
-                                max = input.at<uchar>(n, m);
+                            if (max < input.at<uchar>(m, n))
+                                max = input.at<uchar>(m, n);
                         }
                     }
                     output.at<uchar>(i, j) = max;
@@ -303,8 +303,8 @@ class ImgOps {
                         int min = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = min;
@@ -314,8 +314,8 @@ class ImgOps {
                         int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = min;
@@ -325,8 +325,8 @@ class ImgOps {
                         int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = min;
@@ -336,8 +336,8 @@ class ImgOps {
                         int min = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = min;
@@ -347,8 +347,8 @@ class ImgOps {
                         int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = min;
@@ -358,8 +358,8 @@ class ImgOps {
                         int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = min;
@@ -369,8 +369,8 @@ class ImgOps {
                         int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = min;
@@ -380,8 +380,8 @@ class ImgOps {
                         int min = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
                             }
                         }
                         output.at<uchar>(i, j) = min;
@@ -390,8 +390,8 @@ class ImgOps {
                     int min = input.at<uchar>(i, j);
                     for (int m = i - range; m < i + range; m++) {
                         for (int n = j - range; n < j + range; n++) {
-                            if (min > input.at<uchar>(n, m))
-                                min = input.at<uchar>(n, m);
+                            if (min > input.at<uchar>(m, n))
+                                min = input.at<uchar>(m, n);
                         }
                     }
                     output.at<uchar>(i, j) = min;
@@ -411,10 +411,10 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
-                                else if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
+                                else if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         int media = int((max + min) / 2);
@@ -426,10 +426,10 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
-                                else if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
+                                else if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         int media = int((max + min) / 2);
@@ -441,10 +441,10 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
-                                else if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
+                                else if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         int media = int((max + min) / 2);
@@ -456,10 +456,10 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
-                                else if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
+                                else if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         int media = int((max + min) / 2);
@@ -471,10 +471,10 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
-                                else if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
+                                else if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         int media = int((max + min) / 2);
@@ -486,10 +486,10 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
-                                else if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
+                                else if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         int media = int((max + min) / 2);
@@ -501,10 +501,10 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
-                                else if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
+                                else if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         int media = int((max + min) / 2);
@@ -516,10 +516,10 @@ class ImgOps {
                         int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<uchar>(n, m))
-                                    min = input.at<uchar>(n, m);
-                                else if (max < input.at<uchar>(n, m))
-                                    max = input.at<uchar>(n, m);
+                                if (min > input.at<uchar>(m, n))
+                                    min = input.at<uchar>(m, n);
+                                else if (max < input.at<uchar>(m, n))
+                                    max = input.at<uchar>(m, n);
                             }
                         }
                         int media = int((max + min) / 2);
@@ -530,10 +530,10 @@ class ImgOps {
                     int max = input.at<uchar>(i, j);
                     for (int m = i - range; m < i + range; m++) {
                         for (int n = j - range; n < j + range; n++) {
-                            if (min > input.at<uchar>(n, m))
-                                min = input.at<uchar>(n, m);
-                            else if (max < input.at<uchar>(n, m))
-                                max = input.at<uchar>(n, m);
+                            if (min > input.at<uchar>(m, n))
+                                min = input.at<uchar>(m, n);
+                            else if (max < input.at<uchar>(m, n))
+                                max = input.at<uchar>(m, n);
                         }
                     }
                     int media = int((max + min) / 2);
@@ -563,10 +563,10 @@ class ImgOps {
                 for (int j = 0; j < input.rows; j++) {
                     if (input.at<uchar>(i, j) > lim) {
                         fundo++;
-                        media_fundo += input.at<Vec3b>(i, j)[0];
+                        media_fundo += input.at<uchar>(i, j);
                     } else {
                         objeto++;
-                        media_objeto += input.at<Vec3b>(i, j)[0];
+                        media_objeto += input.at<uchar>(i, j);
                     }
                 }
             }
@@ -605,9 +605,9 @@ class ImgOps {
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
                 if (input.at<uchar>(i, j) > menor_lim)
-                    output.at<uchar>(j, i) = 255;
+                    output.at<uchar>(i, j) = 255;
                 else
-                    output.at<uchar>(j, i) = 0;
+                    output.at<uchar>(i, j) = 0;
             }
         }
     }
@@ -701,7 +701,7 @@ class ImgOps {
                     for (int ii = -1; ii <= 1; ii++) {
                         for (int jj = -1; jj <= 1; jj++) {
                             if (masc[ii + 1][jj + 1] == 1)
-                                output.at<uchar>(j + jj, i + ii) = 255;
+                                output.at<uchar>(i + ii, j + jj) = 255;
                         }
                     }
                 }
@@ -733,9 +733,9 @@ class ImgOps {
                             if (masc[ii + 1][jj + 1] == 1 && input.at<uchar>(i + ii, j + jj) == 0)
                                 remove = true;
                             if (remove)
-                                output.at<uchar>(j, i) = 0;
+                                output.at<uchar>(i, j) = 0;
                             else
-                                output.at<uchar>(j, i) = 255;
+                                output.at<uchar>(i, j) = 255;
                         }
                     }
                 }
