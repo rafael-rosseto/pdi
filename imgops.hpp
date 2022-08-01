@@ -358,8 +358,8 @@ class ImgOps {
                         int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m))
-                                    min = input.at<Vec3b>(n, m);
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
                             }
                         }
                         output.at<uchar>(i, j) = min;
@@ -701,7 +701,7 @@ class ImgOps {
                     for (int ii = -1; ii <= 1; ii++) {
                         for (int jj = -1; jj <= 1; jj++) {
                             if (masc[ii + 1][jj + 1] == 1)
-                                output.at<uchar>(j + jj, i + ii)) = 255;
+                                output.at<uchar>(j + jj, i + ii) = 255;
                         }
                     }
                 }
