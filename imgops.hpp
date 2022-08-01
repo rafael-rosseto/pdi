@@ -193,101 +193,101 @@ class ImgOps {
                 if (i < range || i > input.cols - range || j < range || j > input.rows - range) {
                     // se está no canto superior esquerdo
                     if (i < range && j < range) {
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int max = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
                         output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
                     }
                     // se está no canto superior direito
                     else if (i > (input.cols - range) && j < range) {
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
+                        output.at<uchar>(i, j) = max;
                     }
                     // se está no canto inferior direito
                     else if (i > (input.cols - range) && j > (input.rows - range)) {
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
+                        output.at<uchar>(i, j) = max;
                     }
                     // se está no canto inferior esquerdo
                     else if (i < range && j > (input.rows - range)) {
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int max = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
+                        output.at<uchar>(i, j) = max;
                     }
                     // se está na borda de cima
                     else if (j < range) {
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
+                        output.at<uchar>(i, j) = max;
                     }
                     // se está na borda da direita
                     else if (i > input.cols - range) {
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
+                        output.at<uchar>(i, j) = max;
                     }
                     // se está na borda de baixo
                     else if (j > input.rows - range) {
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
+                        output.at<uchar>(i, j) = max;
                     }
                     // se está na borda da esquerda
                     else {
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int max = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
+                        output.at<uchar>(i, j) = max;
                     }
                 } else {
-                    int max = input.at<Vec3b>(i, j)[0];
+                    int max = input.at<uchar>(i, j);
                     for (int m = i - range; m < i + range; m++) {
                         for (int n = j - range; n < j + range; n++) {
-                            if (max < input.at<Vec3b>(n, m)[0])
-                                max = input.at<Vec3b>(n, m)[0];
+                            if (max < input.at<uchar>(n, m))
+                                max = input.at<uchar>(n, m);
                         }
                     }
-                    output.at<Vec3b>(Point(i, j)) = Vec3b(max, max, max);
+                    output.at<uchar>(i, j) = max;
                 }
             }
         }
@@ -300,244 +300,244 @@ class ImgOps {
                 if (i < range || i > input.cols - range || j < range || j > input.rows - range) {
                     // se está no canto superior esquerdo
                     if (i < range && j < range) {
-                        int min = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
+                        output.at<uchar>(i, j) = min;
                     }
                     // se está no canto superior direito
                     else if (i > (input.cols - range) && j < range) {
-                        int min = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
+                        output.at<uchar>(i, j) = min;
                     }
                     // se está no canto inferior direito
                     else if (i > (input.cols - range) && j > (input.rows - range)) {
-                        int min = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
+                        output.at<uchar>(i, j) = min;
                     }
                     // se está no canto inferior esquerdo
                     else if (i < range && j > (input.rows - range)) {
-                        int min = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
+                        output.at<uchar>(i, j) = min;
                     }
                     // se está na borda de cima
                     else if (j < range) {
-                        int min = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = 0; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
+                        output.at<uchar>(i, j) = min;
                     }
                     // se está na borda da direita
                     else if (i > input.cols - range) {
-                        int min = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < input.cols; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<Vec3b>(n, m))
+                                    min = input.at<Vec3b>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
+                        output.at<uchar>(i, j) = min;
                     }
                     // se está na borda de baixo
                     else if (j > input.rows - range) {
-                        int min = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < input.rows; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
+                        output.at<uchar>(i, j) = min;
                     }
                     // se está na borda da esquerda
                     else {
-                        int min = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
                         for (int m = 0; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
                             }
                         }
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
+                        output.at<uchar>(i, j) = min;
                     }
                 } else {
-                    int min = input.at<Vec3b>(i, j)[0];
+                    int min = input.at<uchar>(i, j);
                     for (int m = i - range; m < i + range; m++) {
                         for (int n = j - range; n < j + range; n++) {
-                            if (min > input.at<Vec3b>(n, m)[0])
-                                min = input.at<Vec3b>(n, m)[0];
+                            if (min > input.at<uchar>(n, m))
+                                min = input.at<uchar>(n, m);
                         }
                     }
-                    output.at<Vec3b>(Point(i, j)) = Vec3b(min, min, min);
+                    output.at<uchar>(i, j) = min;
                 }
             }
         }
     }
 
-    void filtraMedia(Mat input, Mat output, int range) {  // não utilizarei range por enquanto
+    void filtraMedia(Mat input, Mat output, int range) {
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {  // laços para percorrer a imagem
                 // em cada pixel fazer:
                 if (i < range || i > input.cols - range || j < range || j > input.rows - range) {
                     // se está no canto superior esquerdo
                     if (i < range && j < range) {
-                        int min = input.at<Vec3b>(i, j)[0];
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
-                                else if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
+                                else if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
                         int media = int((max + min) / 2);
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
+                        output.at<uchar>(i, j) = media;
                     }
                     // se está no canto superior direito
                     else if (i > (input.cols - range) && j < range) {
-                        int min = input.at<Vec3b>(i, j)[0];
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
-                                else if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
+                                else if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
                         int media = int((max + min) / 2);
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
+                        output.at<uchar>(i, j) = media;
                     }
                     // se está no canto inferior direito
                     else if (i > (input.cols - range) && j > (input.rows - range)) {
-                        int min = input.at<Vec3b>(i, j)[0];
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
-                                else if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
+                                else if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
                         int media = int((max + min) / 2);
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
+                        output.at<uchar>(i, j) = media;
                     }
                     // se está no canto inferior esquerdo
                     else if (i < range && j > (input.rows - range)) {
-                        int min = input.at<Vec3b>(i, j)[0];
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
-                                else if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
+                                else if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
                         int media = int((max + min) / 2);
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
+                        output.at<uchar>(i, j) = media;
                     }
                     // se está na borda de cima
                     else if (j < range) {
-                        int min = input.at<Vec3b>(i, j)[0];
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
-                                else if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
+                                else if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
                         int media = int((max + min) / 2);
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
+                        output.at<uchar>(i, j) = media;
                     }
                     // se está na borda da direita
                     else if (i > input.cols - range) {
-                        int min = input.at<Vec3b>(i, j)[0];
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
-                                else if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
+                                else if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
                         int media = int((max + min) / 2);
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
+                        output.at<uchar>(i, j) = media;
                     }
                     // se está na borda de baixo
                     else if (j > input.rows - range) {
-                        int min = input.at<Vec3b>(i, j)[0];
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
-                                else if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
+                                else if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
                         int media = int((max + min) / 2);
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
+                        output.at<uchar>(i, j) = media;
                     }
                     // se está na borda da esquerda
                     else {
-                        int min = input.at<Vec3b>(i, j)[0];
-                        int max = input.at<Vec3b>(i, j)[0];
+                        int min = input.at<uchar>(i, j);
+                        int max = input.at<uchar>(i, j);
                         for (int m = i - range; m < i + range; m++) {
                             for (int n = j - range; n < j + range; n++) {
-                                if (min > input.at<Vec3b>(n, m)[0])
-                                    min = input.at<Vec3b>(n, m)[0];
-                                else if (max < input.at<Vec3b>(n, m)[0])
-                                    max = input.at<Vec3b>(n, m)[0];
+                                if (min > input.at<uchar>(n, m))
+                                    min = input.at<uchar>(n, m);
+                                else if (max < input.at<uchar>(n, m))
+                                    max = input.at<uchar>(n, m);
                             }
                         }
                         int media = int((max + min) / 2);
-                        output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
+                        output.at<uchar>(i, j) = media;
                     }
                 } else {
-                    int min = input.at<Vec3b>(i, j)[0];
-                    int max = input.at<Vec3b>(i, j)[0];
+                    int min = input.at<uchar>(i, j);
+                    int max = input.at<uchar>(i, j);
                     for (int m = i - range; m < i + range; m++) {
                         for (int n = j - range; n < j + range; n++) {
-                            if (min > input.at<Vec3b>(n, m)[0])
-                                min = input.at<Vec3b>(n, m)[0];
-                            else if (max < input.at<Vec3b>(n, m)[0])
-                                max = input.at<Vec3b>(n, m)[0];
+                            if (min > input.at<uchar>(n, m))
+                                min = input.at<uchar>(n, m);
+                            else if (max < input.at<uchar>(n, m))
+                                max = input.at<uchar>(n, m);
                         }
                     }
                     int media = int((max + min) / 2);
-                    output.at<Vec3b>(Point(i, j)) = Vec3b(media, media, media);
+                    output.at<uchar>(i, j) = media;
                 }
             }
         }
