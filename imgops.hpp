@@ -687,12 +687,6 @@ class ImgOps {
             {1, 1, 1},
             {0, 1, 0}};
         int cor;
-        
-        for (int i = 0; i < input.cols; i++) {
-            for (int j = 0; j < input.rows; j++) {
-                output.at<uchar>(i, j) = 0;
-            }
-        }
 
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
@@ -716,12 +710,6 @@ class ImgOps {
             {0, 1, 0}};
         int cor;
         bool remove;
-        
-        for (int i = 0; i < input.cols; i++) {
-            for (int j = 0; j < input.rows; j++) {
-                output.at<uchar>(i, j) = 0;
-            }
-        }
 
         for (int i = 0; i < input.cols; i++) {
             for (int j = 0; j < input.rows; j++) {
